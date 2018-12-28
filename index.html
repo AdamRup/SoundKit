@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    #soundsSector {
+        display: flex;
+        flex-direction: column;
+    }
+
+    #recordSector{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .row {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .sound {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 25px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        width: 100px;
+        height: 100px;
+        background: orange;
+    }
+
+  
+</style>
+
+<body>
+    <audio src=""></audio>
+    <div id="soundsSector">
+        <div class="row">
+            <div class="sound" id="Q">
+                <span>snap-yes_1</span>
+            </div>
+            <div class="sound" id="W">
+                <span>pickle_rick</span>
+            </div>
+            <div class="sound" id="E">
+                <span>my-man</span>
+            </div>
+            <div class="sound" id="R">
+                <span>hihat</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="sound" id="A">
+                <span>openhat</span>
+            </div>
+            <div class="sound" id="S">
+                <span>ride</span>
+            </div>
+            <div class="sound" id="D">
+                <span>tink</span>
+            </div>
+            <div class="sound" id="F">
+                <span>clap</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="sound" id="Z">
+                <span>boom</span>
+            </div>
+            <div class="sound" id="X">
+                <span>snare</span>
+            </div>
+            <div class="sound" id="C">
+                <span>kick</span>
+            </div>
+            <div class="sound" id="V">
+                <span>tom</span>
+            </div>
+        </div>
+    </div>
+    <div id="recordSector">
+        <span>Rec</span>
+        <input type="checkbox" checked="checked">
+    </div>
+</body>
+<script>
+    const snd = document.querySelector('audio');
+    // const sndBtn = document.querySelector('sound');
+    document.addEventListener('keypress', (e) => {
+        snd.currentTime = 0;
+        switch (e.charCode) {
+            case 113:
+                snd.src = 'samples/snap-yes_1.mp3';
+                snd.play();
+                press('Q');
+                break;
+            case 119:
+                snd.src = 'samples/pickle_rick.mp3';
+                snd.play();
+                press('W');
+                break;
+            case 101:
+                snd.src = 'samples/my-man.mp3';
+                snd.play();
+                press('E');
+                break;
+            case 114:
+                snd.src = 'samples/hihat.wav';
+                snd.play();
+                press('R');
+                break;
+            case 97:
+                snd.src = 'samples/openhat.wav';
+                snd.play();
+                press('A');
+                break;
+            case 115:
+                snd.src = 'samples/ride.wav';
+                snd.play();
+                press('S');
+                break;
+            case 100:
+                snd.src = 'samples/tink.wav';
+                snd.play();
+                press('D');
+                break;
+            case 102:
+                snd.src = 'samples/clap.wav';
+                snd.play();
+                press('F');
+                break;
+            case 122:
+                snd.src = 'samples/boom.wav';
+                snd.play();
+                press('Z');
+                break;
+            case 120:
+                snd.src = 'samples/snare.wav';
+                snd.play();
+                press('X');
+                break;
+            case 99:
+                snd.src = 'samples/kick.wav';
+                snd.play();
+                press('C');
+                break;
+            case 118:
+                snd.src = 'samples/tom.wav';
+                snd.play();
+                press('V');
+                break;
+        }
+
+    })
+    function press(id) {
+        document.getElementById(id).style.background = 'blue';
+    }
+
+    document.addEventListener('keyup', (e) => {
+        switch (e.keyCode) {
+            case 81:
+                up('Q');
+                break;
+            case 87:
+                up('W');
+                break;
+            case 69:
+                up('E');
+                break;
+            case 82:
+                up('R');
+                break;
+            case 65:
+                up('A');
+                break;
+            case 83:
+                up('S');
+                break;
+            case 68:
+                up('D');
+                break;
+            case 70:
+                up('F');
+                break;
+            case 90:
+                up('Z');
+                break;
+            case 88:
+                up('X');
+                break;
+            case 67:
+                up('C');
+                break;
+            case 86:
+                up('V');
+                break;
+        }
+    })
+    function up(id) {
+        document.getElementById(id).style.background = 'orange';
+    }
+</script>
+
+</html>
