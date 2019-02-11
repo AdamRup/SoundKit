@@ -12,7 +12,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        flex-direction: column;
+        flex-direction: row;
     }
 
     #soundsSector {
@@ -34,15 +34,42 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        border-radius: 25px;
+        border-radius: 12.5px;
         margin-right: 10px;
         margin-bottom: 10px;
         width: 100px;
         height: 100px;
         background: orange;
+        box-shadow: 2px 2px 5px black;
     }
 
-  
+    .path{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .choosePath{
+        display: flex;
+        flex-direction: row;
+    }
+
+    button{
+        width: 100px;
+        height: 30px;
+        border-radius: 10px;
+        background: gray;
+        font-size: 20px;
+    }
+    button:hover{
+        background: darkgray;
+    }
+    .choosePath span{
+        font-size: 20px;
+    }
+    input{
+        width: 20px;
+        height: 20px;
+    }
 </style>
 
 <body>
@@ -92,19 +119,41 @@
         </div>
     </div>
     <div id="recordSector">
-        <span>Rec</span>
-        <input type="checkbox" checked="checked">
+        <div class="path">
+            <div class="choosePath">
+                    <span>Rec 1</span>
+                    <input type="checkbox" id="rec1">
+            </div>
+            <div class="choosePath">
+                <span>Rec 2</span>
+                    <input type="checkbox" id="rec2">
+            </div>
+            <div class="choosePath">
+                <span>Rec 3</span>
+                <input type="checkbox" id="rec3">
+            </div>
+            <div class="choosePath">
+                <span>Rec 4</span>
+                <input type="checkbox" id="rec4">
+            </div>
+            <button id="playBtn">Play</button>
+        </div>
     </div>
 </body>
 <script>
     const snd = document.querySelector('audio');
-    // const sndBtn = document.querySelector('sound');
+
+    //odtworzenie dźwięku po wciśnięciu danego przycisku
     document.addEventListener('keypress', (e) => {
+        //wyzerowanie licznika czasu w znaczniku audio dla odtwarzanego dźwięku
         snd.currentTime = 0;
         switch (e.charCode) {
             case 113:
+                //pobranie ścieżki do dźwięku
                 snd.src = 'samples/snap-yes_1.mp3';
+                //wywołanie funckji play odtważającej dźwięk
                 snd.play();
+                //wywołanie funkcji, która animuje wciśnięcie przycisku na ekranie
                 press('Q');
                 break;
             case 119:
@@ -165,13 +214,18 @@
         }
 
     })
+
+    //funkcja animująca wciśnięcie przycisku
     function press(id) {
         document.getElementById(id).style.background = 'blue';
+        document.getElementById(id).style.boxShadow = 'none';
     }
 
+    //event wywołujący funkcję animującą puszczenie przycisku
     document.addEventListener('keyup', (e) => {
         switch (e.keyCode) {
             case 81:
+                //wywołanie funkcji puszczenia przycisku
                 up('Q');
                 break;
             case 87:
@@ -209,9 +263,120 @@
                 break;
         }
     })
+
+    //funkcja animująca puszczenie przycisku
     function up(id) {
         document.getElementById(id).style.background = 'orange';
+        document.getElementById(id).style.boxShadow = '2px 2px 5px black';
     }
+
+    const lineOne = document.getElementById('rec1');
+    const lineTwo = document.getElementById('rec2');
+    const lineThree = document.getElementById('rec3');
+    const lineFour = document.getElementById('rec4');
+    const playBtn = document.getElementById('playBtn');
+    
+    //tablica zagranych dźwięków
+    let recKey = [];
+    //tablica przechowywująca czas do zagrania kolejnego dźwięku
+    let recTime = [];
+
+    //funkcja rejestrująca zagraną melodię wykorzystuje recKey, recTime oraz sprawdza czy checkbox jest zaznaczony
+    function rec(checkbox, recKey, recTime) {
+        if (checkbox.checked) {
+            let i = 0;
+            document.onkeydown = function (e) {
+                //po wciśnięciu przycisku zapisanie czasu kiedy to został zagrany dźwięk i dodanie czasu do tablicy recTime oraz przycisku do tablicy recKey z tym samym indexem(i)
+                let time = new Date().getTime();
+                let key = e.keyCode;
+                recKey[i] = key;
+                recTime[i] = time;
+                i++;
+            }
+        }
+    }
+
+    //funkcja stworzona na potrzebę odtworzenia zarejestrowanych dźwięków
+    function keyPlays(keyCode) {
+        switch (keyCode) {
+            case 81:
+                snd.src = 'samples/snap-yes_1.mp3';
+                return 81;
+                break;
+            case 87:
+                snd.src = 'samples/pickle_rick.mp3';
+                break;
+            case 69:
+                snd.src = 'samples/my-man.mp3';
+                break;
+            case 82:
+                snd.src = 'samples/hihat.wav';
+                break;
+            case 65:
+                snd.src = 'samples/openhat.wav';
+                break;
+            case 83:
+                snd.src = 'samples/ride.wav';
+                break;
+            case 68:
+                snd.src = 'samples/tink.wav';
+                break;
+            case 70:
+                snd.src = 'samples/clap.wav';
+                break;
+            case 90:
+                snd.src = 'samples/boom.wav';
+                break;
+            case 88:
+                snd.src = 'samples/snare.wav';
+                break;
+            case 67:
+                snd.src = 'samples/kick.wav';
+                break;
+            case 86:
+                snd.src = 'samples/tom.wav';
+                break;
+        }
+        snd.play();
+    }
+
+    //funkcja odtwarzająca zarejestrowaną sekwencję dźwięków
+    function playLine(recKey, recTime) {
+        for (let i = 0; i < recKey.length; i++) {
+            if (i !== 0) {
+                setTimeout(function () { keyPlays(recKey[i]) }, timeToNextSound(i, recTime));
+            }
+            else {
+                keyPlays(recKey[i]);
+            }
+        }
+    }
+    //funkcja obliczająca czas do następnego dźwięku
+    function timeToNextSound(i, recTime) {
+        return recTime[i] - recTime[0];
+    }
+
+    //eventy wywołujące funkcję rec do nagrania sekwencji dźwięków
+    lineOne.addEventListener('change', function () {
+        rec(lineOne, recKey, recTime);
+    });
+
+    lineTwo.addEventListener('change', function () {
+        rec(lineTwo, recKey, recTime);
+    });
+
+    lineThree.addEventListener('change', function () {
+        rec(lineTwo, recKey, recTime);
+    });
+
+    lineFour.addEventListener('change', function () {
+        rec(lineTwo, recKey, recTime);
+    });
+
+    //event wywołujący odtworzenie nagranych dźwięków
+    playBtn.addEventListener('click', (e) => {
+        playLine(recKey, recTime);
+    });
 </script>
 
 </html>
